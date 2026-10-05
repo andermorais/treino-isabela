@@ -441,6 +441,43 @@ main{flex:1;padding:18px 16px calc(var(--sab) + 80px)}
 .ex-var{font-size:12px;color:var(--c-mute);margin:0 0 12px;padding-left:6px;border-left:2px solid var(--day-color)}
 .ex-var b{color:var(--c-graphite);font-weight:600}
 
+/* ===== Balão efêmero "O que mudou" ===== */
+.ex-new-chip{
+  display:inline-flex;align-items:center;gap:3px;
+  font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--c-coral);background:rgba(224,120,86,.12);
+  padding:2px 7px;border-radius:999px;margin-left:6px;
+  vertical-align:2px;transition:opacity .3s;
+}
+.ex-new-chip.seen{opacity:.4}
+.ex-whats-new{
+  position:relative;margin:0 0 12px;
+  padding:10px 32px 10px 12px;
+  background:linear-gradient(135deg,rgba(224,120,86,.09),rgba(232,181,71,.09));
+  border:1px solid rgba(224,120,86,.22);
+  border-radius:10px;
+  font-size:12.5px;line-height:1.5;color:var(--c-graphite);
+  opacity:0;max-height:0;overflow:hidden;
+  transition:opacity .35s ease,max-height .35s ease,margin .35s ease,padding .35s ease;
+  pointer-events:none;
+}
+.ex-whats-new.show{
+  opacity:1;max-height:200px;pointer-events:auto;
+}
+.ex-whats-new.show.fading{opacity:0;transition:opacity 1.2s ease}
+.ex-whats-new::before{
+  content:"✨";margin-right:6px;font-size:13px;
+}
+.ex-whats-new b{font-weight:700;color:var(--c-coral-2)}
+.wn-close{
+  position:absolute;top:5px;right:5px;
+  width:22px;height:22px;border-radius:999px;
+  display:grid;place-items:center;color:var(--c-mute);
+  background:transparent;border:0;cursor:pointer;
+}
+.wn-close:active{background:rgba(0,0,0,.06)}
+.wn-close svg{width:11px;height:11px}
+
 .ex-tools{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
 .tool-input{
   display:flex;align-items:center;gap:6px;padding:6px 10px;
@@ -645,7 +682,7 @@ footer.foot .heart{color:var(--c-coral)}
   </div>
 
   <div class="title-block">
-    <h1 class="title">Força &<br><em>vôlei de praia</em></h1>
+    <h1 class="title">Força &<br><em>atletismo</em></h1>
     <p class="subtitle">Programa de 7 semanas · 4 dias por semana</p>
   </div>
 
@@ -700,8 +737,8 @@ footer.foot .heart{color:var(--c-coral)}
 
     <div class="intro-card">
       <div class="intro-eyebrow">Para Isabela · 66 kg · 1,71 m</div>
-      <h2 class="intro-h">Um programa pensado para te deixar mais forte, definida e explosiva na areia.</h2>
-      <p class="intro-p">Quatro dias por semana, uma hora por sessão. Dois treinos superiores e dois inferiores, com componente atlético voltado ao vôlei de praia (salto, explosão, estabilidade) e proteção específica do tornozelo esquerdo. Cada exercício tem séries, repetições, descanso e RPE adaptados à fase atual. Marque o que fizer — tudo fica salvo.</p>
+      <h2 class="intro-h">Um programa pensado para te deixar mais forte, definida e explosiva.</h2>
+      <p class="intro-p">Quatro dias por semana, uma hora por sessão. Dois treinos superiores e dois inferiores, com componente atlético (salto, explosão, estabilidade) e proteção específica do tornozelo esquerdo. Cada exercício tem séries, repetições, descanso e RPE adaptados à fase atual. Marque o que fizer — tudo fica salvo.</p>
     </div>
 
     <div class="section-label"><span>Semana tipo</span></div>
@@ -905,7 +942,7 @@ const ANKLE_BLOCK = [
   {n:3, name:"Tibial com elástico (dorsiflexão)",  spec:"2 × 15 cada pé",          notes:"Sentada, elástico preso no pé, puxar a ponta do pé em direção à canela contra a resistência. Fortalece o tibial anterior."},
   {n:4, name:"Inversão/eversão com elástico",      spec:"2 × 10 × 4 direções",     notes:"Quatro direções com o pé contra elástico: para cima, para baixo, para dentro e para fora. Estabilidade lateral do tornozelo."},
   {n:5, name:"Panturrilha excêntrica no degrau",   spec:"3 × 10",                  notes:"Subir nas duas pontas, descer apenas com a perna trabalhada em 3 segundos. Fortalece o tendão de Aquiles."},
-  {n:6, name:"Pouso silencioso",                   spec:"3 × 5 saltos baixos",     notes:"Saltos verticais baixos com pouso o mais silencioso possível. Treina absorção do impacto — preparação direta para o vôlei."}
+  {n:6, name:"Pouso silencioso",                   spec:"3 × 5 saltos baixos",     notes:"Saltos verticais baixos com pouso o mais silencioso possível. Treina absorção do impacto e protege o tornozelo."}
 ];
 
 const COOLDOWN_SUP = [
@@ -950,7 +987,7 @@ const PROGRAM = {
         {id:"a1", name:"Pull down",                 sets:[3,4,4], reps:["12","10","8"],    rest:90, rpe:[7,8,9], notes:"Pegada aberta pronada, puxar a barra até a clavícula, peito alto, escápulas que descem.", variation:"Pegada supinada (foco bíceps + dorsal baixo)."},
         {id:"a2", name:"Remada curvada",            sets:[3,4,4], reps:["10","8","6–8"],  rest:90, rpe:[7,8,9], notes:"Tronco 30–45°, cotovelos rente ao corpo, escápulas que se aproximam no topo.", variation:"Remada Pendlay (barra parte do chão a cada rep)."},
         {id:"a3", name:"Puxada alta com triângulo", sets:[3,3,4], reps:["12","10","10"],  rest:75, rpe:[7,7,8], notes:"Pegada neutra, cotovelos descem ao lado do tronco, lats no controle.", variation:"Puxada cruzada (pegada cruzada estreita)."},
-        {id:"a4", name:"Remada neutra sentada",     sets:[3,3,4], reps:["12","10","8"],   rest:75, rpe:[7,7,8], notes:"Tronco fixo, levar punhos à parte baixa do abdome, contração de 1 s.", variation:"Remada cavalinho (T-bar)."},
+        {id:"a4", name:"Remada cavalinho (T-bar)",   sets:[3,3,4], reps:["12","10","8"],   rest:75, rpe:[7,7,8], notes:"Tronco inclinado ~30°, pegada neutra na alavanca, puxar até o punho encostar na parte baixa do peito, cotovelos rente ao corpo, contração de 1 s. Core firme para proteger a lombar.", variation:"Remada neutra sentada na máquina (tronco apoiado, mais segura para a lombar em dia cansado).", whatsNew:"Trocamos a remada neutra pela cavalinho: amplitude maior e mais estímulo em espessura de costas. A neutra fica como variação para dias de lombar pesada."},
         {id:"a5", name:"Rosca direta",              sets:[3,3,4], reps:["12","10","8"],   rest:60, rpe:[7,8,9], notes:"Cotovelos colados ao tronco, sem balanço, excêntrica 2 s.", variation:"Rosca scott (banco) para travar os cotovelos."},
         {id:"a6", name:"Rosca martelo",             sets:[2,3,3], reps:["12","10","10"],  rest:60, rpe:[7,7,8], notes:"Punho neutro o tempo todo, alternada ou simultânea, trabalha braquial.", variation:"Rosca martelo na corda (polia baixa)."},
         {id:"a7", name:"Prancha frontal",           sets:[3,3,3], reps:["30 s","45 s","60 s"], rest:45, rpe:[7,8,8], notes:"Linha reta tornozelo-ombro, glúteo contraído, sem afundar o quadril.", variation:"Prancha com elevação alternada de pé.", tag:"Abdominal"}
@@ -976,22 +1013,23 @@ const PROGRAM = {
     {
       id:"C", title:"Glúteo dominante + Quadríceps", short:"Glúteo", color:"var(--d-c)", soft:"var(--d-c-soft)",
       focus:"Glúteo · Quadríceps · Estabilidade unilateral",
-      warmupRef:"INF_WU", warmupTime:"10 min", warmupWarn:"Aquecimento de tornozelo é obrigatório. Não pule, mesmo se estiver atrasada.",
+      warmupRef:"INF_WU", warmupTime:"10 min", warmupWarn:"Aquecimento de tornozelo continua prioritário mesmo com a dor diminuindo. Não pule.",
       ankleRef:"ANKLE", ankleTime:"8 min", ankleWarn:null,
       cooldownRef:"INF_CD", cooldownTime:"10 min",
       exercises:[
-        {id:"c1", name:"Búlgaro",                       sets:[3,3,4], reps:["10 cada","10–12 cada","8–10 cada"], rest:90, rpe:[7,8,9], notes:"Pé de trás no banco, tronco levemente inclinado para frente, joelho da frente alinhado ao pé. Atenção ao tornozelo — qualquer dor, reduza a amplitude.", variation:"Búlgaro com halteres (carga ao lado, mais estabilidade)."},
+        {id:"c1", name:"Búlgaro",                       sets:[3,3,4], reps:["10 cada","10–12 cada","8–10 cada"], rest:90, rpe:[7,8,9], notes:"Pé de trás no banco, tronco levemente inclinado para frente, joelho da frente alinhado ao pé. Primeira série da semana em amplitude reduzida para testar o tornozelo.", variation:"Búlgaro com halteres (carga ao lado, mais estabilidade).", whatsNew:"Com a dor diminuindo, você pode progredir normal. Só mantém atenção na primeira série de cada semana — teste a amplitude antes de carregar."},
         {id:"c2", name:"Elevação pélvica (hip thrust)", sets:[3,4,4], reps:["12","10","8"],   rest:90, rpe:[7,8,9], notes:"Costas apoiadas no banco, queixo no peito, subir empurrando pelo calcanhar, contração de 1 s no topo.", variation:"Hip thrust unilateral (uma perna estendida)."},
         {id:"c3", name:"Cadeira extensora",             sets:[3,3,4], reps:["12","12","10"], rest:60, rpe:[7,7,8], notes:"Contração no topo 1 s, descida controlada, encaixe firme da pelve no encosto.", variation:"Extensora unilateral (corrige assimetria)."},
         {id:"c4", name:"Step up",                       sets:[3,3,4], reps:["10 cada","10–12 cada","8 cada"], rest:75, rpe:[7,7,8], notes:"Banco de altura média (joelho a 90°), pé inteiro no banco, subir empurrando com o calcanhar, controle no tornozelo na descida.", variation:"Step up com halteres ao lado."},
         {id:"c5", name:"Coice na polia",                sets:[3,3,3], reps:["12 cada","12 cada","10–12 cada"], rest:60, rpe:[7,7,8], notes:"Quadril neutro sem rotação, perna estendida atrás com contração no glúteo, sem arquear a lombar.", variation:"Coice no aparelho de glúteo em pé (se disponível)."},
         {id:"c6", name:"Leg press 180°",                sets:[3,3,4], reps:["12","10","8"],   rest:90, rpe:[7,8,9], notes:"Pés altos e médio-largos no apoio (foco glúteo + posterior), sem travar os joelhos no topo, lombar plana.", variation:"Leg press pés baixos e estreitos (mais quadríceps)."},
-        {id:"c7", name:"Cadeira abdutora",              sets:[2,2,2], reps:["15","15","15"], rest:45, rpe:[7,7,7], notes:"Acessório opcional — trabalha o glúteo médio. Movimento curto e contraído, tronco levemente inclinado para frente intensifica o estímulo.", variation:"Abdução em pé com mini band acima dos joelhos (em casa).", tag:"Opcional"},
+        {id:"c7", name:"Extensão cruzada com abdução na polia", sets:[3,3,3], reps:["12 cada","12 cada","10–12 cada"], rest:45, rpe:[7,7,8], notes:"Tornozelo preso na polia baixa, apoio nas duas mãos à frente, perna de trabalho vai atrás e para fora em diagonal, contração forte no glúteo médio. Tronco levemente inclinado à frente, quadril neutro sem rotação.", variation:"Cadeira abdutora (opção mais simples e isolada se a polia estiver ocupada).", whatsNew:"Substitui a cadeira abdutora. Trabalha glúteo médio + máximo numa diagonal parecida com a aterrissagem de um salto — estabilidade de quadril em apoio único."},
+        {id:"c9", name:"Panturrilha em pé com carga",   sets:[3,4,4], reps:["15","12","10"], rest:45, rpe:[7,8,8], notes:"Máquina de panturrilha em pé ou smith com apoio na ponta do pé, joelhos estendidos (não travados). Subir ao máximo, pausa de 1 s no topo, descida lenta sentindo o alongamento.", variation:"Panturrilha no leg press (pés na borda inferior, só o antepé apoiado).", whatsNew:"Novo exercício. Joelho estendido = foco no gastrocnêmio, o músculo que gera altura em salto vertical e dá definição à perna."},
         {id:"c8", name:"Dead bug (anti-rotação)",       sets:[3,3,3], reps:["8 cada","8 cada","10 cada"], rest:45, rpe:[7,8,8], notes:"Lombar colada no chão durante todo o movimento, braço e perna opostos descem juntos, retorno controlado.", variation:"Dead bug com banda elástica nas mãos.", tag:"Abdominal"}
       ]
     },
     {
-      id:"D", title:"Posterior + Lombar + Vôlei", short:"Posterior + Salto", color:"var(--d-d)", soft:"var(--d-d-soft)",
+      id:"D", title:"Posterior + Lombar + Salto", short:"Posterior + Salto", color:"var(--d-d)", soft:"var(--d-d-soft)",
       focus:"Posterior · Salto vertical · Tornozelo",
       warmupRef:"INF_WU", warmupTime:"10 min", warmupWarn:"Saltos só depois do aquecimento completo. Aterrissagem silenciosa = aterrissagem segura.",
       ankleRef:"ANKLE", ankleTime:"8 min", ankleWarn:null,
@@ -1001,7 +1039,8 @@ const PROGRAM = {
         {id:"d2", name:"Mesa flexora deitada",           sets:[3,3,4], reps:["12","10","8–10"], rest:75, rpe:[7,7,8], notes:"Quadril colado no banco, contração no topo, descida em 2 s.", variation:"Flexora sentada (alvo cabeça curta do bíceps femoral)."},
         {id:"d3", name:"Extensão de lombar (banco 45°)", sets:[2,3,3], reps:["12","12","10–12"], rest:60, rpe:[6,7,7], notes:"Parar na linha do tronco (sem hiperextender), foco no glúteo e lombar, mãos cruzadas no peito.", variation:"Hiperextensão reverse (pernas que sobem) se o banco permitir."},
         {id:"d4", name:"Agachamento sumô",               sets:[3,3,4], reps:["10","10","8"], rest:75, rpe:[7,7,8], notes:"Pés bem afastados e pontas voltadas para fora ~30°, joelhos seguem a linha dos pés, descer entre os pés.", variation:"Sumô com halter ou kettlebell entre as pernas."},
-        {id:"d5", name:"Agachamento com salto", isJump:true, sets:[0,3,4], reps:["—","6","6"], rest:60, rpe:[0,7,8], notes:"Apenas a partir da semana 2. Agachamento parcial seguido de salto vertical máximo, aterrissagem leve e silenciosa, joelhos alinhados, absorver o impacto. Se sentir o tornozelo, trocar por step up explosivo sem fase aérea.", variation:"Salto com contra-movimento (CMJ) à mão livre.", tag:"Vôlei"},
+        {id:"d5", name:"Agachamento com salto", isJump:true, sets:[0,3,4], reps:["—","6","6"], rest:60, rpe:[0,7,8], notes:"Apenas a partir da semana 2. Agachamento parcial seguido de salto vertical máximo, aterrissagem leve e silenciosa, joelhos alinhados, absorver o impacto na flexão de quadril e joelho.", variation:"Salto com contra-movimento (CMJ) à mão livre.", tag:"Explosão", whatsNew:"Aviso de substituição por dor removido. O tornozelo está melhor — pode saltar normal. Aterrissagem silenciosa continua sendo a regra de ouro."},
+        {id:"d6", name:"Panturrilha sentado com carga", sets:[3,3,4], reps:["15","12","12"], rest:45, rpe:[7,7,8], notes:"Máquina de panturrilha sentada ou halter apoiado nos joelhos, antepé no apoio, joelhos a 90°. Subir ao máximo, pausa de 1 s no topo, descida controlada em 2 s. Movimento curto e preciso.", variation:"Panturrilha sentada no smith (barra apoiada nos joelhos com almofada).", whatsNew:"Novo exercício. Joelho dobrado desliga o gastrocnêmio e isola o sóleo — músculo profundo que estabiliza o tornozelo e dá resistência em saltos repetidos. Complementa a panturrilha em pé do Dia C."},
         {id:"d8", name:"Pallof press (anti-rotação)",    sets:[3,3,3], reps:["10 cada","10 cada","12 cada"], rest:45, rpe:[7,8,8], notes:"De pé ao lado da polia, mãos no centro do peito, estender os braços resistindo à rotação. Não deixar o tronco girar.", variation:"Pallof press de joelhos (mais desafio de core).", tag:"Abdominal"}
       ]
     }
@@ -1055,7 +1094,7 @@ const STICKERS = {
   },
   humorOn: {
     name: "Tô on",
-    phrases: ["tá pronta pro vôlei já já", "vai com fome", "aproveita o dia bom"],
+    phrases: ["tá pronta, vai com tudo", "vai com fome", "aproveita o dia bom"],
     svg: '<svg viewBox="0 0 100 100"><g transform="translate(50,52)"><line x1="-46" y1="-12" x2="-58" y2="-18" stroke="#1B2A33" stroke-width="3" stroke-linecap="round"/><line x1="46" y1="-12" x2="58" y2="-18" stroke="#1B2A33" stroke-width="3" stroke-linecap="round"/><path d="M -48,-8 Q -50,18 -28,22 Q -6,22 -4,2 Q -8,-12 -32,-12 Q -46,-12 -48,-8 Z" fill="#0E5A6B" stroke="#1B2A33" stroke-width="2.5"/><path d="M 48,-8 Q 50,18 28,22 Q 6,22 4,2 Q 8,-12 32,-12 Q 46,-12 48,-8 Z" fill="#0E5A6B" stroke="#1B2A33" stroke-width="2.5"/><rect x="-6" y="-6" width="12" height="4" rx="1" fill="#1B2A33"/><path d="M -46,-6 Q -48,14 -28,18 Q -8,18 -6,2 Q -10,-9 -32,-9 Q -44,-9 -46,-6 Z" fill="#E8B547" opacity=".25"/><path d="M 46,-6 Q 48,14 28,18 Q 8,18 6,2 Q 10,-9 32,-9 Q 44,-9 46,-6 Z" fill="#E8B547" opacity=".25"/><line class="stk-glint-l" x1="-40" y1="4" x2="-20" y2="-4" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" opacity="0"/><line class="stk-glint-r" x1="20" y1="4" x2="40" y2="-4" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" opacity="0"/></g></svg>'
   }
 };
@@ -1087,6 +1126,7 @@ let state = {
   loads: {},  // "A.a1" : "30"
   jumps: {},  // "W1.D.d5.s1" : 6
   humor: {},  // "W1.A" : "mole" | "on"
+  whatsNewSeen: {}, // "A.a4" : true (chip "Novo" fica dim após primeira abertura)
   expressMode: false,
   lastSave: null
 };
@@ -1099,6 +1139,7 @@ function loadState(){
       Object.assign(state, parsed);
     }
   }catch(e){}
+  if(!state.whatsNewSeen) state.whatsNewSeen = {};
   // Merge from hash
   mergeFromHash();
 }
@@ -1329,6 +1370,16 @@ function renderDay(day){
     const setsRepsLabel = sets===0 ? "—" : `${sets} × ${reps}`;
     const tag = ex.tag || "Exercício";
     const tagClass = ex.tag === "Opcional" ? "ex-tag opt" : "ex-tag";
+    const hasNew = !!ex.whatsNew;
+    const newSeen = hasNew && state.whatsNewSeen && state.whatsNewSeen[day.id+"."+ex.id];
+    const newChipHtml = hasNew ? `<span class="ex-new-chip ${newSeen?"seen":""}" data-action="fold">✨ Novo</span>` : "";
+    const newBubbleHtml = hasNew ? `
+      <div class="ex-whats-new" data-wn-key="${day.id}.${ex.id}">
+        ${ex.whatsNew}
+        <button class="wn-close" data-action="wn-close" aria-label="Fechar">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>` : "";
 
     html += `
       <article class="ex ${checked?"checked":""}" data-ex-key="${key}" data-day="${day.id}" data-ex="${ex.id}">
@@ -1338,7 +1389,7 @@ function renderDay(day){
           </div>
           <div class="ex-num">${String(idx+1).padStart(2,"0")}</div>
           <div class="ex-title-wrap" data-action="fold">
-            <div class="ex-title">${ex.name}</div>
+            <div class="ex-title">${ex.name}${newChipHtml}</div>
             <span class="${tagClass}">${tag}</span>
           </div>
           <div class="ex-fold-ind" data-action="fold">
@@ -1354,6 +1405,7 @@ function renderDay(day){
         </div>
 
         <div class="ex-body">
+          ${newBubbleHtml}
           <p class="ex-notes">${ex.notes}</p>
           <p class="ex-var"><b>Variação :</b> ${ex.variation}</p>
           <div class="ex-tools">
@@ -1453,13 +1505,59 @@ function renderBlock(cfg){
   return html;
 }
 
+/* ===== "O que mudou" — balão efêmero por exercício ===== */
+const WN_SHOW_MS = 7000;      // tempo visível antes do fade
+const WN_FADE_MS = 1200;      // duração do fade final (sync com .fading no CSS)
+const wnTimers = new WeakMap();
+
+function handleWhatsNewOnOpen(card){
+  const bubble = $(".ex-whats-new", card);
+  if(!bubble) return;
+  // Cancelar timers em andamento (reabrir reinicia)
+  const prev = wnTimers.get(bubble);
+  if(prev){
+    clearTimeout(prev.show);
+    clearTimeout(prev.fade);
+  }
+  bubble.classList.remove("fading");
+  // Pequeno atraso para pegar a transição suavemente após o slideDown do body
+  const showT = setTimeout(() => {
+    bubble.classList.add("show");
+  }, 60);
+  const fadeT = setTimeout(() => {
+    bubble.classList.add("fading");
+    setTimeout(() => bubble.classList.remove("show","fading"), WN_FADE_MS);
+  }, WN_SHOW_MS);
+  wnTimers.set(bubble, {show:showT, fade:fadeT});
+  // Marcar como já visto (chip "Novo" fica dim)
+  const dayId = card.dataset.day, exId = card.dataset.ex;
+  const seenKey = dayId+"."+exId;
+  if(!state.whatsNewSeen[seenKey]){
+    state.whatsNewSeen[seenKey] = true;
+    scheduleSave();
+    const chip = $(".ex-new-chip", card);
+    if(chip) chip.classList.add("seen");
+  }
+}
+
+function dismissWhatsNew(card){
+  const bubble = $(".ex-whats-new", card);
+  if(!bubble) return;
+  const t = wnTimers.get(bubble);
+  if(t){ clearTimeout(t.show); clearTimeout(t.fade); }
+  bubble.classList.add("fading");
+  setTimeout(() => bubble.classList.remove("show","fading"), WN_FADE_MS);
+}
+
 function attachDayHandlers(panel, day){
   // Main exercises (ex)
   $$(".ex", panel).forEach(card => {
     const titleArea = $$(".ex-title-wrap, .ex-fold-ind, .ex-stats", card);
     titleArea.forEach(el => el.addEventListener("click", e => {
       e.stopPropagation();
+      const willOpen = !card.classList.contains("open");
       card.classList.toggle("open");
+      if(willOpen) handleWhatsNewOnOpen(card);
     }));
     const checkEl = $(".ex-check", card);
     checkEl.addEventListener("click", e => {
@@ -1491,6 +1589,13 @@ function attachDayHandlers(panel, day){
         handleJump(btn);
       });
     });
+    const wnClose = $('[data-action="wn-close"]', card);
+    if(wnClose){
+      wnClose.addEventListener("click", e => {
+        e.stopPropagation();
+        dismissWhatsNew(card);
+      });
+    }
   });
   // Mini items (warmup, ankle, cooldown)
   $$(".ex-mini", panel).forEach(card => {
